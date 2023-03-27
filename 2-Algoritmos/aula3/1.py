@@ -94,32 +94,36 @@ def student_stats():
     pass
 
 
-read_file()
-while True:
-    title("== Cadastro de Alunos ==")
-    print("[1] Cadastrar Aluno")
-    print("[2] Listar Alunos")
-    print("[3] Pesquisar por Nome")
-    print("[4] Excluir")
-    print("[5] Resumo")
-    title("[6] Finalizar")
-    print()
-    option = input_number("Opção: ")
-    print()
-    print()
-    if option == 1:
-        create_student()
-    elif option == 2:
-        list_students()
-    elif option == 3:
-        search_student()
-    elif option == 4:
-        delete_student()
-    elif option == 5:
-        student_stats()
-    elif option == 6:
-        save_file()
-        break
-    else:
-        print("Comando inválido.")
+def run_loop():
+    while True:
+        title("== Cadastro de Alunos ==")
+        print("[1] Cadastrar Aluno")
+        print("[2] Listar Alunos")
+        print("[3] Pesquisar por Nome")
+        print("[4] Excluir")
+        print("[5] Resumo")
+        title("[6] Finalizar")
         print()
+        option = input_number("Opção: ")
+        print()
+        print()
+        if option == 1:
+            create_student()
+        elif option == 2:
+            list_students()
+        elif option == 3:
+            search_student()
+        elif option == 4:
+            delete_student()
+        elif option == 5:
+            student_stats()
+        elif option == 6:
+            break
+        else:
+            print("Comando inválido.")
+            print()
+
+
+read_file()
+run_loop()
+save_file()
