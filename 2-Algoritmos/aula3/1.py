@@ -21,7 +21,7 @@ def save_file():
     with open("alunos.txt", "w") as file:
         for name, age, course in zip(names, ages, courses):
             file.write(f"{name};{age};{course}\n")
-    print("As informações dos alunos foram salvas")
+    print("As informações dos alunos foram salvas com sucesso.")
 
 
 def title(text, separator="="):
@@ -31,14 +31,14 @@ def title(text, separator="="):
 
 
 def input_number(message):
-    user_input = ""
-    try:
-        user_input = int(input(message))
-    except:
+    user_input = input(message)
+    is_num = user_input.isnumeric()
+    if is_num:
+        return int(user_input)
+    else:
         print("O valor deve ser um número...")
         print()
         input_number(message)
-    return user_input
 
 
 def create_student():
@@ -74,14 +74,19 @@ def search_student():
         print("- Nenhum resultado -")
 
 
-def delete_student():
-    title("* Remover aluno *")
-    print("Escolha o aluno  a ser removido pelo seu ID, consultando a lista abaixo:")
-    list_students()
+def delete_student(show_list=True):
+    if show_list:
+        title("* Remover aluno *")
+        print("Escolha o aluno  a ser removido pelo seu ID, consultando a lista abaixo:")
+        list_students()
     print()
-    id = input_number("Excluir aluno com ID: ")
-    if id <= 0 or id > len(names):
+    id = input_number("Excluir aluno com ID (ou 0 para cancelar): ")
+    if id == 0:
+        print("Operação cancelada.")
+        return
+    if id < 0 or id > len(names):
         print("ID inválido.")
+        delete_student(show_list=False)
         return
     name = names[id-1]
     names.pop(id-1)
@@ -106,7 +111,6 @@ def run_loop():
         print()
         option = input_number("Opção: ")
         print()
-        print()
         if option == 1:
             create_student()
         elif option == 2:
@@ -124,6 +128,8 @@ def run_loop():
             print()
 
 
+print("\nInicializando...\n")
 read_file()
 run_loop()
 save_file()
+print("\nEncerrando.\n")
