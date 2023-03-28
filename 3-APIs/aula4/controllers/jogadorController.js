@@ -83,11 +83,26 @@ export const jogadorDelete = async (req, res) => {
 
 // <Filters>
 export const jogadorSearch = async (req, res) => {
-    const { pesquisa } = req.body;
+    const { pesquisa, entreIdades } = req.body;
+
+    const betweenAges =
+        entreIdades?.length === 2
+            ? { idade: { [Op.between]: [entreIdades[0], entreIdades[1]] } }
+            : {};
+
+    const searchQuery = pesquisa
+        ? {
+              [Op.or]: [
+                  { nome: { [Op.like]: `%${pesquisa}%` } },
+                  { clube: { [Op.like]: `%${pesquisa}%` } },
+                  { posicao: { [Op.like]: `%${pesquisa}%` } },
+              ],
+          }
+        : {};
+
+    const query = { where: { [Op.and]: { ...betweenAges, ...searchQuery } } };
     try {
-        const jogadores = await Jogadores.findAll({
-            where: { nome: { [Op.like]: `%${pesquisa}%` } },
-        });
+        const jogadores = await Jogadores.findAll(query);
         if (jogadores?.length > 0) {
             res.status(200).json({ jogadores });
         } else {
