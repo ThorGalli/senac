@@ -44,21 +44,34 @@ def readProducts():
 def updateProduct():
     id = int(input("ID:"))
     response = requests.get(url_api+"/"+str(id))
-    produto = response.json
-    if produto["id"] == 0:
+    product = response.json
+    if product["id"] == 0:
         print("Erro, id inválido")
         return
 
     print("Informe os campos a serem alterados, deixe vazio para não alterar.")
-    newDescription = input(f"Descrição [{produto['descricao']}] =>")
-    newBrand = input(f"Descrição [{produto['marca']}] =>")
-    newAmount = input(f"Descrição [{produto['quant']}] =>")
-    newPrice = input(f"Descrição [{produto['preco']}] =>")
 
-    newProduct = {'descricao': newDescription,
+    newDescription = input(f"Descrição [{product['descricao']}] =>")
+    newBrand = input(f"Descrição [{product['marca']}] =>")
+    newAmount = input(f"Descrição [{product['quant']}] =>")
+    newPrice = input(f"Descrição [{product['preco']}] =>")
+
+    newDescription = newDescription if newDescription != "" else product['descricao']
+    newBrand = newBrand if newBrand != "" else product['marca']
+    newAmount = newAmount if newAmount != "" else product['quant']
+    newPrice = newPrice if newPrice != "" else product['preco']
+
+    newProduct = {'id': id,
+                  'descricao': newDescription,
                   'marca': newBrand,
                   'quant': newAmount,
                   'preco': newPrice}
+    try:
+        response = requests.put(url_api, json=newProduct)
+        id = str(response.json()[id])
+        print(f"Produto atualizado! Código: {id}")
+    except:
+        print("erro na inserção")
 
 
 def deleteProduct():
