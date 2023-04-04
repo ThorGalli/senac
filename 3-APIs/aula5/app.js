@@ -16,6 +16,7 @@ async function conecta_db() {
         console.log("Conexão com banco de dados realizada com sucesso");
         await sequelize.sync({alter:true}); // cria as tabelas do sistema (a partir dos modelos - se não existirem)
         console.log("\nSync Done!");
+        console.log(`Servidor Rodando na Porta: ${port}\n`);
     } catch (error) {
         console.error("Erro na conexão com o banco: ", error);
     }
