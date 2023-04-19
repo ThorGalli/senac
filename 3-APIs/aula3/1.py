@@ -7,10 +7,9 @@ def title(text, separator="-"):
     print()
     print(text)
     print(separator*30)
-    pass
 
 
-def createProduct():
+def create_product():
     description = input("Descrição.: ")
     brand = input("Marca.....: ")
     amount = input("Quantidade: ")
@@ -21,13 +20,14 @@ def createProduct():
                "preco": price}
     try:
         response = requests.post(url_api, json=product)
-        id = str(response.json()[id])
-        print(f"Produto cadastrado! Código: {id}")
-    except:
-        print("erro na inserção")
+        _id = str(response.json()[_id])
+        print(f"Produto cadastrado! Código: {_id}")
+    except Exception as e:
+        print("Erro na inserção:")
+        print(e)
 
 
-def readProducts():
+def read_products():
     title("Lista de Produtos")
     response = requests.get(url_api)
     products = response.json()
@@ -41,36 +41,44 @@ def readProducts():
         print(f"{prod['preco']:9.2f}")
 
 
-def updateProduct():
-    id = int(input("ID:"))
-    response = requests.get(url_api+"/"+str(id))
+def update_product():
+    _id = int(input("ID:"))
+    response = requests.get(url_api+"/"+str(_id))
     produto = response.json
     if produto["id"] == 0:
         print("Erro, id inválido")
         return
 
     print("Informe os campos a serem alterados, deixe vazio para não alterar.")
-    newDescription = input(f"Descrição [{produto['descricao']}] =>")
-    newBrand = input(f"Descrição [{produto['marca']}] =>")
-    newAmount = input(f"Descrição [{produto['quant']}] =>")
-    newPrice = input(f"Descrição [{produto['preco']}] =>")
+    new_description = input(f"Descrição [{produto['descricao']}] =>")
+    new_brand = input(f"Descrição [{produto['marca']}] =>")
+    new_amount = input(f"Descrição [{produto['quant']}] =>")
+    new_price = input(f"Descrição [{produto['preco']}] =>")
 
-    newProduct = {'descricao': newDescription,
-                  'marca': newBrand,
-                  'quant': newAmount,
-                  'preco': newPrice}
+    new_product = {'descricao': new_description,
+                  'marca': new_brand,
+                  'quant': new_amount,
+                  'preco': new_price}
+    
+    try:
+        response = requests.put(url_api+"/"+str(_id), json=new_product)
+        _id = str(response.json()[_id])
+        print(f"Produto atualizado! Código: {_id}")
+    except Exception as e:
+        print("Erro na atualização do produto:")
+        print(e)
 
 
-def deleteProduct():
-    pass
+def delete_product():
+    raise NotImplementedError()
 
 
-def searchProduct():
-    pass
+def search_product():
+    raise NotImplementedError()
 
 
-def getStats():
-    pass
+def get_stats():
+    raise NotImplementedError()
 
 
 while True:
@@ -85,17 +93,17 @@ while True:
 
     option = int(input("Informe a sua opção: "))
     if option == 1:
-        createProduct()
+        create_product()
     elif option == 2:
-        readProducts()
+        read_products()
     elif option == 3:
-        updateProduct()
+        update_product()
     elif option == 4:
-        deleteProduct()
+        delete_product()
     elif option == 5:
-        searchProduct()
+        search_product()
     elif option == 6:
-        getStats()
+        get_stats()
     elif option == 7:
         break
     else:

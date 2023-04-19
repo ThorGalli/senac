@@ -8,7 +8,7 @@ def input_number(message):
     user_input = ""
     try:
         user_input = int(input(message))
-    except:
+    except ValueError:
         print("O valor deve ser um número...")
         print()
         input_number(message)
