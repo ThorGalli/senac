@@ -80,9 +80,9 @@ mask 1 {
     224 1   1   1   0       0   0   0   0
 
     3 bits de rede => 2^3 = 8 subredes
-    5 bits de host => 2^5 = 32 ips por redes
-    
+    5 bits de host => 2^5 = 32 IPs por redes
 
-    192.168.10.0
+    32 IPs -1(ID) -1(BD) => 32-2 = 30 IPs válidos
 
+    8 subredes com 30 IPs válidos cada =>  8*30 = 240 máquinas
 }
