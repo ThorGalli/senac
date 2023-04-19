@@ -1,0 +1,4 @@
+Thor;28;ADS
+Jaison;25;ADS
+Mariana Magalh�es;205;Redes de computadores
+ThorTaqui;92;ads
