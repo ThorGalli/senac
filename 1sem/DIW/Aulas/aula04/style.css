@@ -1,0 +1,49 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box; /* CSS3 */
+}
+
+/* ponto = classe */
+.container {
+    border: 2px solid red;
+    width: 100%; /* largura */
+    height: 500px; /* altura */
+}
+
+/*
+Resumo: block sempre inicia em uma nova linha, ocupando toda linha(row) onde estão inseridos & possui as propriedades width e height */
+.d-block {
+    display: block;
+    background-color: #3392ff;
+    width: 50%;
+    margin: 2px;
+}
+
+/*
+Resumo: inline ocupa somente o espaço necessário para sua exibição, permite elemento ao seu lado & não possui as propriedades width e height */
+.i-inline {
+    display: inline;
+    background-color: #66e666;
+}
+
+/*
+Resumo: inline-block permite elemento ao seu lado & possui as propriedades width e height */
+.d-inlineblock {
+    display: inline-block;
+    background-color: #ff73c2;
+    height: 50px;
+    margin: 2px;
+}
+
+/* 
+Resumo: none esconder um elemento, mas permanecer com ele no DOM
+*/
+.n-none {
+    display: none;
+}
+
+h1 {
+    font-size: 80px;
+    color: #ffe02f;
+}

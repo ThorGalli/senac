@@ -1,0 +1,47 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    height: 300vh;
+    width: 300vw;
+}
+
+/* 
+Position:
+
+static -padrão
+fixed -fixa em uma posição no viewport
+relative
+absolute
+sticky ** talvez precise do webkit
+
+atributos extras (menos no static):
+top, left, bottom, right
+
+margin,padding,position,display
+*/
+
+header {
+    position: fixed;
+    top: 0;
+}
+
+.container {
+    margin-left: 50px;
+    margin-top: 50px;
+    width: 400px;
+    height: 400px;
+    background: #fade0a;
+}
+
+.box {
+    position: sticky; /* grudento */
+    top: 10px;
+    left: 0;
+    width: 60px;
+    height: 60px;
+    background: blue;
+}

@@ -1,0 +1,40 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Helvetica";
+}
+
+
+header {
+    text-align: center;
+    background-color: lightsteelblue;
+    border-bottom: 2px solid black;
+}
+
+h1 {
+    padding-top: 10px;
+    font-size: 40px;
+}
+
+h2 {
+    font-size: 30px;
+    padding-bottom: 10px;
+}
+
+.profilepic {
+    display: block;
+    margin: 10px;
+    width: 90%;
+    border: 2px solid purple;
+}
+
+.container {
+    border: 5px solid magenta;
+}
+
+.drawer {
+    height: 1000px;
+    width: 200px;
+    background-color: salmon;
+}

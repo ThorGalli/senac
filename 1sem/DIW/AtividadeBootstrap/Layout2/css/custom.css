@@ -1,0 +1,32 @@
+:root{
+    --customblue: #3c32f0;
+    --custompurple: #961ee6;
+}
+
+.custom-bg-blue-purple { 
+    background: var(--customblue);
+    background: linear-gradient(45deg, var(--customblue) 0%, var(--custompurple) 100%); 
+}
+
+.custom-font-tnm{
+    font-family: 'Times New Roman', Times, serif;
+}
+
+
+.custom-font-large{
+    font-size: 50px;
+}
+
+.custom-container{
+    max-width: 900px;
+}
+
+.custom-font-huge{
+    font-size: 72px;
+}
+
+@media only screen and (max-width: 576px){
+    .custom-font-huge{
+        font-size: 60px;
+    }
+}

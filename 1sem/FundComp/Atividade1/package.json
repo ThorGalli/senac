@@ -1,0 +1,17 @@
+{
+  "name": "atividade1",
+  "version": "1.0.0",
+  "description": "Atividade do Glads",
+  "main": "vaga.js",
+  "dependencies": {
+    "ansi-regex": "^4.1.1",
+    "prompt-sync": "^4.2.0",
+    "strip-ansi": "^5.2.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Thor",
+  "license": "ISC"
+}

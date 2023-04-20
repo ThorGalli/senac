@@ -1,0 +1,20 @@
+p { color: red; }
+h1 { font-size: 14px; }
+
+.aula { font-weight: bold; }
+.aula-titulo { background-color: #000000; }
+
+#cancelar { color: #ffffff; background-color: red; }
+#enviar { color: green; text-transform: uppercase; }
+
+* { 
+    background-color: blue; 
+}
+
+[type="text"] {
+    font-family: 'Trebuchet MS';
+}
+
+:hover {
+    background-color: #ffff00;
+}

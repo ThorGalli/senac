@@ -1,0 +1,14 @@
+{
+  "name": "ex",
+  "version": "1.0.0",
+  "description": "",
+  "main": "trab3.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Thor",
+  "license": "ISC",
+  "dependencies": {
+    "prompt-sync": "^4.2.0"
+  }
+}

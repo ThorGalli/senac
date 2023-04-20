@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Layout 1</title>
+    <!-- https://getbootstrap.com -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+  </head>
+
+  <body>
+    <header>
+      <nav class="navbar navbar-dark bg-dark">
+        <div class="container">
+          <a class="navbar-brand" href="#">Start Bootstrap</a>
+          <ul class="nav justify-content-end">
+            <li class="nav-item"><a href="#" class="nav-link px-2 text-white">Home</a></li>
+            <li class="nav-item"><a href="#" class="nav-link px-2 text-secondary">About</a></li>
+            <li class="nav-item"><a href="#" class="nav-link px-2 text-secondary">Contact</a></li>
+            <li class="nav-item"><a href="#" class="nav-link px-2 text-secondary">Services</a></li>
+          </ul>
+        </div>
+      </nav>
+    </header>
+
+    <!-- Content -->
+    <main class="bg-light">
+      <div class="container">
+        <!-- Promo Picture -->
+        <div class="row py-3 py-lg-5 align-content-center">
+          <div class="col-12 col-lg-7 d-flex align-items-center justify-content-center">
+            <img
+              src="https://picsum.photos/900/400"
+              class="rounded-2 img-fluid"
+              alt="Random picsum 900 x 400"
+            />
+          </div>
+
+          <!-- Business Intro -->
+          <div class="col-12 col-lg-5 py-3 d-flex align-items-center justify-content-center">
+            <div>
+              <h1>Business Name or Tagline</h1>
+              <p>
+                Lorem ipsum dolor sit amet consectetur adipisicing elit. Hic ipsam adipisci suscipit
+                pariatur excepturi? Molestias qui nesciunt ipsam a optio ducimus vero, fugit officia
+                blanditiis numquam ea asperiores reiciendis, reprehenderit assumenda quasi nostrum
+                sapiente. Unde maxime quibusdam nostrum aspernatur delectus.
+              </p>
+              <a href="#" class="btn btn-primary">Call to Action!</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Quoted Separator -->
+        <div class="rounded-2 shadow-sm bg-secondary text-white text-center py-5">
+          This call to action card is a great place to showcase some important information.
+        </div>
+
+        <!-- Cards -->
+        <section class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3 g-lg-5 py-3 py-lg-5">
+          <!-- Card 1 -->
+          <div class="col">
+            <div class="card shadow-sm h-100">
+              <div class="card-body">
+                <h2 class="card-title">Card One</h2>
+                <p class="card-text">
+                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Quod unde aperiam
+                  debitis, veritatis, minima laudantium expedita consectetur dolorum aut voluptatum
+                  harum aliquam sint.
+                </p>
+              </div>
+              <div class="card-footer">
+                <a href="#" class="btn btn-primary">More info</a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 2 -->
+          <div class="col">
+            <div class="card shadow-sm h-100">
+              <div class="card-body">
+                <h2 class="card-title">Card Two</h2>
+                <p class="card-text">
+                  Lorem ipsum, dolor sit amet consectetur adipisicing elit. A impedit eveniet sunt
+                  cupiditate quasi repellendus nostrum, explicabo optio temporibus veniam. Dolor,
+                  excepturi quo!
+                </p>
+              </div>
+              <div class="card-footer">
+                <a href="#" class="btn btn-primary">More info</a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 3 -->
+          <div class="col">
+            <div class="card shadow-sm h-100">
+              <div class="card-body">
+                <h2 class="card-title">Card Three</h2>
+                <p class="card-text">
+                  Lorem ipsum dolor sit amet, consectetur adipisicing elit. Velit, accusantium et
+                  minima nihil debitis adipisci quaerat aliquid magni vitae pariatur sit suscipit
+                  fuga!
+                </p>
+              </div>
+              <div class="card-footer">
+                <a href="#" class="btn btn-primary">More info</a>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="py-5 bg-dark text-white">
+      <div class="container text-center">
+        <span>Copyright © Your Website 2022</span>
+      </div>
+    </footer>
+
+    <!-- JavaScript Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"></script>
+  </body>
+</html>

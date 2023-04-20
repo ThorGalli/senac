@@ -1,0 +1,52 @@
+:root{
+    --peachy: rgb(255, 110, 43);
+    --pinky: rgb(255, 0, 128);
+    --dark-pinky: rgb(211, 71, 169);
+}
+
+.custom-bg-black-transparent { 
+    background: rgba(0, 0, 0, 0.7);
+}
+
+.custom-bg-orange-pink{
+    background: var(--pinky);
+    background: radial-gradient(circle, var(--peachy) 0%, var(--peachy) 25%,var(--pinky) 75%, var(--peachy) 100%); 
+}
+
+.custom-bg-pink{
+    background: var(--pinky);
+}
+.custom-bg-pink:hover{
+    background: var(--dark-pinky);
+    border-color: blueviolet;
+}
+
+.custom-nav-fixed{
+    position: fixed;
+    width: 100%;
+    z-index: 99;
+}
+
+.custom-text-light{
+    color: rgb(145, 145, 145);
+}
+
+.custom-text-light:hover{
+    color: white;
+}
+
+.custom-fs-90{
+    font-size: 90px;
+}
+
+.custom-fs-60{
+    font-size: 60px;
+}
+
+.custom-fs-50{
+    font-size: 50px;
+}
+
+.custom-height{
+    height: 690px;
+}

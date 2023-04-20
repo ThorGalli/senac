@@ -1,0 +1,38 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+header img#b2 {
+    display: none;
+}
+
+/* sintaxe media queries @media Rules (regras) */
+@media screen and (max-width: 1024px) {
+    body {
+        background: #b5ffb5;
+    }
+    
+    header img#b1 {
+        display: none;
+    }
+
+    header img#b2 {
+        display: inline;
+    }
+}
+/* sintaxe media queries @media Rules (regras) */
+@media screen and (max-width: 500px) {
+    body {
+        background: #56b9ff;
+    }
+
+    header img#b2 {
+        display: none;
+    }
+
+    p {
+        font-size: 26px;
+    }
+}
