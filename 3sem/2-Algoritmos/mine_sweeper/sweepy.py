@@ -1,14 +1,39 @@
 import random
+import os
 
 bomb_char = "X"
 empty_char = " "
 padding = "   "
 
+highscores = []
+
+
+def read_file():
+    if not os.path.isfile("highscores.csv"):
+        return
+    with open("highscores.csv", "r") as arq:
+        lines = arq.readlines()
+        for line in lines:
+            split_line = line.split(";")
+            score_data = {
+                "name": split_line[0], "size": split_line[1], "value": split_line[2][0:-1]}
+            highscores.append(score_data)
+
+
+def salva_arquivo():
+    with open("highscores.csv", "w") as arq:
+        for score in highscores:
+            arq.write(f'{score["name"]};{score["size"]};{score["value"]}\n')
+        print("Alterações salvas com sucesso.")
+
+
 def print_invalid_input():
     print("\nEscolha inválida. Por favor, tente novamente.\n")
 
+
 def print_separator(size=32):
     print("=" * size)
+
 
 def choose_size():
     print_separator()
@@ -33,6 +58,7 @@ def choose_size():
 
     return size, bombs
 
+
 def generate_map(size, char):
     map = []
     for row in range(size):
@@ -42,8 +68,9 @@ def generate_map(size, char):
         map.append(new_row)
     return map
 
+
 def generate_bomb_map(size, bombs):
-    bomb_map = generate_map(size, char = 0)
+    bomb_map = generate_map(size, char=0)
     bombs_placed = 0
     while bombs_placed < bombs:
         row = random.randint(0, size - 1)
@@ -54,9 +81,10 @@ def generate_bomb_map(size, bombs):
 
     return bomb_map
 
+
 def generate_game_map(size, bombs):
     bomb_map = generate_bomb_map(size, bombs)
-    game_map = generate_map(size, char = 0)
+    game_map = generate_map(size, char=0)
 
     for row in range(size):
         for col in range(size):
@@ -64,33 +92,35 @@ def generate_game_map(size, bombs):
                 game_map[row][col] = bomb_char
             else:
                 bombs_around = 0
-                for r in range(max(0, row - 1), min(size, row + 2)):
-                    for c in range(max(0, col - 1), min(size, col + 2)):
-                        if bomb_map[r][c] == bomb_char:
+                for row_around in range(max(0, row - 1), min(size, row + 2)):
+                    for col_around in range(max(0, col - 1), min(size, col + 2)):
+                        if bomb_map[row_around][col_around] == bomb_char:
                             bombs_around += 1
                 game_map[row][col] = bombs_around
-    
+
     return game_map
 
+
 def print_coordinates(size):
-        print(padding + " ", end="")
-        for col in range(size):
-            print(f" {chr(col + ord('A'))} ", end=" ")
-        print()
+    print(padding + " ", end="")
+    for col in range(size):
+        print(f" {chr(col + ord('A'))} ", end=" ")
+    print()
+
 
 def print_map(map):
     size = len(map)
-    
+
     # Calculate the size of the game title based on the map size
     title_size = (size * 4 + 4 - len("Sweepy")) // 2
 
-        # On the first row: print the game title and the coordinates
+    # On the first row: print the game title and the coordinates
     print(" " * title_size + "Sweepy")
     print_coordinates(size)
     print(padding+"┌" + "───┬" * (size - 1) + "───┐")
 
     for row in range(size):
-        
+
         # Print the left border of the row
         print(f"{row+1:2} ", end="")
 
@@ -100,7 +130,7 @@ def print_map(map):
 
         # Print the right border of the row and the chess-like coordinates
         print(f"│ {row+1:2}")
-        
+
         # On the last row: print the bottom border of the map
         if row != size - 1:
             print(padding+"├" + "───┼" * (size - 1) + "───┤")
@@ -108,11 +138,68 @@ def print_map(map):
     print(padding + "└" + "───┴" * (size - 1) + "───┘")
     print_coordinates(size)
 
-    
+
+def validate_input(player_input, valid_coords):
+    split_input = str(player_input).split()
+    coords_input = split_input[0]
+    command = player_input[1] if len(coords_input) > 1 else None
+
+    if len(coords_input) < 2:
+        return False, None, None
+
+    letter = coords_input[0]
+    number = coords_input[1:]
+
+    try:
+        letter = str(letter).upper()
+        if str(letter).upper() not in valid_coords:
+            return False, None, None
+        number = int(number)
+        if number < 1 or number > len(valid_coords):
+            return False, None, None
+    except:
+        return False, None, None
+
+    coord_values = (number-1, valid_coords.index(letter))
+    return True, coord_values, command
+
+
+def get_tile(map, coords):
+    return map[coords[0]][coords[1]]
+
 
 def game_loop(player_map, game_map):
-    print_map(player_map)
+    playing = True
+    size = len(game_map)
+    valid_coords = []
+    for i in range(size):
+        valid_coords.append(chr(i + ord('A')))
+
     print_map(game_map)
+    while playing:
+        print_map(player_map)
+        player_input = input(">")
+        is_valid, coord_values, command = validate_input(
+            player_input, valid_coords)
+        if is_valid:
+            game_tile = get_tile(game_map, coord_values)
+            player_tile = get_tile(player_map, coord_values)
+
+            new_tile = "." if command == "-m" else game_tile
+            player_map[coord_values[0]][coord_values[1]] = new_tile
+        else:
+            print_invalid_input()
+
+
+def start_game():
+    size, bombs = choose_size()
+    print_separator()
+    print("Carregando ... ", end="")
+    player_map = generate_map(size, char=empty_char)
+    game_map = generate_game_map(size, bombs)
+    print("pronto!")
+    print_separator()
+    game_loop(player_map, game_map)
 
 
 while True:
@@ -127,11 +214,7 @@ while True:
     choice = input("\nDigite sua escolha: ")
 
     if choice == "1":
-        size, bombs = choose_size()
-        player_map = generate_map(size, char = empty_char)
-        game_map = generate_game_map(size, bombs)
-        print("\nVamos começar!\n")
-        game_loop(player_map, game_map)
+        start_game()
     elif choice == "2":
         # code to view high scores goes here
         pass
