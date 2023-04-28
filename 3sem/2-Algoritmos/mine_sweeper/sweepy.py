@@ -272,6 +272,15 @@ def reveal_tiles_around_zeros(player_map, game_map, coord):
     return player_map
 
 
+def reveal_bombs(player_map, game_map):
+    size = len(game_map)
+    for row in range(size):
+        for col in range(size):
+            if game_map[row][col] == bomb_char:
+                player_map[row][col] = bomb_char
+    return player_map
+
+
 def menu_loop():
     while True:
         print()
@@ -458,7 +467,10 @@ def game_over(player_map, game_map):
     print(" | |_) | | |__| | | |__| | | |  | | |_|")
     print(" |____/   \\____/   \\____/  |_|  |_| (_)" + RESET)
     print("\nVocê perdeu! Cheque o mapa revelado!\n")
-    print_map(game_map)
+
+    revealed_map = reveal_bombs(player_map, game_map)
+
+    print_map(revealed_map)
     input("\nPressione [Enter] para voltar ao menu.\n")
 
 
