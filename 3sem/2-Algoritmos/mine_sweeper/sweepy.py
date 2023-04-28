@@ -1,7 +1,41 @@
 import random
 import os
 
-title = "~ Sweepy ~"
+
+# Cores
+RED = "\033[1;31m"
+GREEN = "\033[0;32m"
+BLUE = "\033[1;34m"
+
+YELLOW = "\033[1;33m"
+MAGENTA = "\033[1;35m"
+CYAN = "\033[1;36m"
+
+RESET = "\033[0;0m"
+BOLD = "\033[;1m"
+REVERSE = "\033[;7m"
+BLACK = "\033[;30m"
+RED_BG = "\033[;41m"
+
+
+def colorize_tile(tile):
+    tile = str(tile)
+    if tile == bomb_char or tile == mark_char:
+        return RED + tile + RESET
+    if tile == empty_char or tile == "0":
+        return BLACK + tile + RESET
+    if tile == "1":
+        return GREEN + tile + RESET
+    if tile == "2":
+        return BLUE + tile + RESET
+    if tile == "3":
+        return YELLOW + tile + RESET
+
+    return MAGENTA + tile + RESET
+
+
+# Configurações
+title = YELLOW + "~ Sweepy ~" + RESET
 bomb_char = "X"
 empty_char = " "
 mark_char = "!"
@@ -49,29 +83,31 @@ def choose_size():
     print(f"{'':^7}Tamanho do campo")
     print_separator(size=16, char=' -')
 
-    print(f"{'':^5}1. Pequeno ({MAP_SMALL['size']}x{MAP_SMALL['size']})")
-    print(f"{'':^5}2. Médio ({MAP_MEDIUM['size']}x{MAP_MEDIUM['size']})")
-    print(f"{'':^5}3. Grande ({MAP_LARGE['size']}x{MAP_LARGE['size']})")
+    for _map in active_maps:
+        index = active_maps.index(_map) + 1
+        formated_size = f"({_map['size']}x{_map['size']})"
+        print(f"{'':^5}{index}. {_map['name']} {formated_size}")
+
     print()
     print(f"{'':^5}0. Cancelar")
     print_separator()
 
     choice = input("\nDigite sua escolha: ")
 
-    if choice == "1":
-        map_selected = MAP_SMALL
-    elif choice == "2":
-        map_selected = MAP_MEDIUM
-    elif choice == "3":
-        map_selected = MAP_LARGE
-    elif choice == "0":
-        return None
-    else:
+    if not choice.isnumeric():
         print_invalid_input()
-        # Chama a função novamente para que o usuário escolha uma opção válida
         return choose_size()
 
-    return map_selected
+    choice = int(choice)
+
+    if choice == 0:
+        return None
+
+    if choice < 0 or choice > len(active_maps):
+        print_invalid_input()
+        return choose_size()
+
+    return active_maps[choice - 1]
 
 
 # Retorna um mapa de preenchido com o caractere especificado
@@ -136,27 +172,26 @@ def print_coordinates(size):
 
 def print_map(map):
     size = len(map)
-    title_size = (size * 4 + 4 - len(title)) // 2
 
-    # Imprime o  título e o topo do tabuleiro
-    print(" " * title_size + title)
+    # Imprime o topo do tabuleiro
     print_coordinates(size)
-    print(padding + "┌" + "───┬" * (size - 1) + "───┐")
+    print(padding + BLACK + "┌" + "───┬" * (size - 1) + "───┐" + RESET)
 
     # Imprime as linhas do tabuleiro
     for row in range(size):
         print(f"{row + 1:2} ", end="")
 
         for col in range(size):
-            print(f"│ {map[row][col]} ", end="")
+            tile = colorize_tile(map[row][col])
+            print(f"{BLACK}│ {tile} ", end="")
 
-        print(f"│ {row + 1:2}")
+        print(f"{BLACK}│{RESET} {row + 1:2}")
 
         if row != size - 1:
-            print(padding + "├" + "───┼" * (size - 1) + "───┤")
+            print(padding + BLACK + "├" + "───┼" * (size - 1) + "───┤" + RESET)
 
     # Imprime a base do tabuleiro
-    print(padding + "└" + "───┴" * (size - 1) + "───┘")
+    print(padding + BLACK + "└" + "───┴" * (size - 1) + "───┘" + RESET)
     print_coordinates(size)
 
 
@@ -240,24 +275,24 @@ def count_marked(_map):
 
 
 def game_over(game_map):
-    print("  ____     ____     ____    __  __   _ ")
+    print(RED+"  ____     ____     ____    __  __   _ ")
     print(" |  _ \\   / __ \\   / __ \\  |  \\/  | | |")
     print(" | |_) | | |  | | | |  | | | \\  / | | |")
     print(" |  _ <  | |  | | | |  | | | |\\/| | | |")
     print(" | |_) | | |__| | | |__| | | |  | | |_|")
-    print(" |____/   \\____/   \\____/  |_|  |_| (_)")
+    print(" |____/   \\____/   \\____/  |_|  |_| (_)" + RESET)
     print("\nVocê perdeu! Cheque o mapa revelado!\n")
     print_map(game_map)
     input("\nPressione [Enter] para voltar ao menu.\n")
 
 
 def game_win(size):
-    print(" __          __  _____   _   _   _ ")
+    print(YELLOW + " __          __  _____   _   _   _ ")
     print(" \\ \\        / / |_   _| | \\ | | | |")
     print("  \\ \\  /\\  / /    | |   |  \\| | | |")
     print("   \\ \\/  \\/ /     | |   | . ` | | |")
     print("    \\  /\\  /     _| |_  | |\\  | |_|")
-    print("     \\/  \\/     |_____| |_| \\_| (_)")
+    print("     \\/  \\/     |_____| |_| \\_| (_)" + RESET)
     print("\nVocê venceu!\n")
     player_name = input("Insira seu nome para registrar sua vitória: ")
     print("TODO: Mostrar colocação")
@@ -276,13 +311,16 @@ def game_loop(player_map, game_map, bomb_amount):
 
     # Loop principal do jogo
     while True:
-        # Mostra o mapa e instruções para o jogador
+        # Conta a quantidade de tiles revelados e marcados
         revealed_amount = count_revealed(player_map)
         marked_amount = count_marked(player_map)
+
+        # Encerra o jogo se o jogador revelou todos os tiles seguros
         if revealed_amount == safe_amount:
             game_win(size)
             break
 
+        # Mostra o mapa e instruções para o jogador
         print()
         print_map(player_map)
         print(f'Revelados: {revealed_amount}/{safe_amount}', end=" | ")
@@ -322,18 +360,18 @@ def game_loop(player_map, game_map, bomb_amount):
 
         # Computa a jogada
         if new_tile == bomb_char:
-            # Encerra o jogo
             game_over(game_map)
             break
         elif new_tile == 0:
             # Revela os tiles ao redor do tile atual recursivamente
             player_map = reveal_tiles_around_zeros(player_map, game_map, coord)
         else:
-            # Apenas revela o tile escolhido
+            # Revela o tile escolhido
             player_map[row][col] = new_tile
 
 
 def start_game(map_selected):
+    print()
     print_separator()
     print("Carregando ... ", end="")
     size = map_selected['size']
@@ -345,7 +383,7 @@ def start_game(map_selected):
     game_loop(player_map, game_map, bomb_amount)
 
 
-def main_menu():
+def menu_loop():
     while True:
         print()
         print_separator()
@@ -375,4 +413,4 @@ def main_menu():
             print_invalid_input()
 
 
-main_menu()
+menu_loop()
