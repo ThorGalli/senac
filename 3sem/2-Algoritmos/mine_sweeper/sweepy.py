@@ -36,14 +36,7 @@ RED_BG = "\033[1;41m"
 title = YELLOW + "~ Sweepy ~" + RESET
 
 
-def ask_name():
-    name = input("Nome (max: 20 letras) =>")
-    if name == "" or len(name) > 20:
-        print("Nome inválido!")
-        return ask_name()
-    return name
-
-
+# Funções de manuseio de arquivos
 def read_file():
     if not os.path.isfile("./highscores.csv"):
         return
@@ -62,8 +55,10 @@ def save_file():
             arq.write(
                 f'{match["name"]};{match["map_size"]};{match["score"]}\n')
         print("Alterações salvas com sucesso.")
+######################
 
 
+# Funções de entrada/saída de dados no terminal
 def print_highscores():
     ordered_scores = sorted(
         highscores, key=lambda x: (x['map_size'], x['score']))
@@ -138,81 +133,12 @@ def stylize_tile(tile):
     return MAGENTA + padded_tile + RESET
 
 
-# Retorna um mapa de preenchido com o caractere especificado
-def generate_map(size, char):
-    new_map = []
-    for _row in range(size):
-        new_row = []
-        for _col in range(size):
-            new_row.append(char)
-        new_map.append(new_row)
-    return new_map
-
-
-# Retorna um mapa populado com bombas
-def generate_bomb_map(size, bomb_amount):
-    # Gera mapa vazio
-    bomb_map = generate_map(size, char=0)
-
-    # Coloca as bombas no mapa de forma aleatória (mas não em cima de outra bomba)
-    bombs_placed = 0
-    while bombs_placed < bomb_amount:
-        row = random.randint(0, size - 1)
-        col = random.randint(0, size - 1)
-        if bomb_map[row][col] != bomb_char:
-            bomb_map[row][col] = bomb_char
-            bombs_placed += 1
-
-    return bomb_map
-
-
-def generate_game_map(size, bombs):
-    bomb_map = generate_bomb_map(size, bombs)
-    game_map = generate_map(size, char=0)
-
-    for row in range(size):
-        for col in range(size):
-            if bomb_map[row][col] == bomb_char:
-                game_map[row][col] = bomb_char
-            else:
-                bombs_around = count_bombs_around(bomb_map, row, col)
-                game_map[row][col] = bombs_around
-
-    return game_map
-
-
-def count_bombs_around(bomb_map, row, col):
-    size = len(bomb_map)
-    bombs_around = 0
-    for row_around in range(max(0, row - 1), min(size, row + 2)):
-        for col_around in range(max(0, col - 1), min(size, col + 2)):
-            if bomb_map[row_around][col_around] == bomb_char:
-                bombs_around += 1
-    return bombs_around
-
-
-def count_revealed(_map):
-    count = 0
-    size = len(_map)
-    for row in range(size):
-        for col in range(size):
-            tile = _map[row][col]
-            if tile != empty_char and tile != mark_char:
-                count += 1
-    return count
-
-
-def count_marked(_map):
-    count = 0
-    size = len(_map)
-    for row in range(size):
-        for col in range(size):
-            tile = _map[row][col]
-            if tile == mark_char:
-                count += 1
-    return count
-
-# Valida input de jogada
+def ask_name():
+    name = input("Nome (max: 20 letras) =>")
+    if name == "" or len(name) > 20:
+        print("Nome inválido!")
+        return ask_name()
+    return name
 
 
 def validate_input(player_input, valid_coords):
@@ -248,9 +174,87 @@ def validate_input(player_input, valid_coords):
     # Se o input for válido, retorna as coordenadas e o comando
     coord_values = (number - 1, valid_coords.index(letter))
     return coord_values, command
+######################
 
 
-# Utilização de recursão para revelar os tiles ao redor caso o tile atual seja zero
+# Geradores de mapas
+def generate_map(size, char):
+    new_map = []
+    for _row in range(size):
+        new_row = []
+        for _col in range(size):
+            new_row.append(char)
+        new_map.append(new_row)
+    return new_map
+
+
+def generate_bomb_map(size, bomb_amount):
+    # Gera mapa vazio
+    bomb_map = generate_map(size, char=0)
+
+    # Coloca as bombas no mapa de forma aleatória (mas não em cima de outra bomba)
+    bombs_placed = 0
+    while bombs_placed < bomb_amount:
+        row = random.randint(0, size - 1)
+        col = random.randint(0, size - 1)
+        if bomb_map[row][col] != bomb_char:
+            bomb_map[row][col] = bomb_char
+            bombs_placed += 1
+
+    return bomb_map
+
+
+def generate_game_map(size, bombs):
+    bomb_map = generate_bomb_map(size, bombs)
+    game_map = generate_map(size, char=0)
+
+    for row in range(size):
+        for col in range(size):
+            if bomb_map[row][col] == bomb_char:
+                game_map[row][col] = bomb_char
+            else:
+                bombs_around = count_bombs_around(bomb_map, row, col)
+                game_map[row][col] = bombs_around
+
+    return game_map
+######################
+
+
+# Contadores
+def count_bombs_around(bomb_map, row, col):
+    size = len(bomb_map)
+    bombs_around = 0
+    for row_around in range(max(0, row - 1), min(size, row + 2)):
+        for col_around in range(max(0, col - 1), min(size, col + 2)):
+            if bomb_map[row_around][col_around] == bomb_char:
+                bombs_around += 1
+    return bombs_around
+
+
+def count_revealed(_map):
+    count = 0
+    size = len(_map)
+    for row in range(size):
+        for col in range(size):
+            tile = _map[row][col]
+            if tile != empty_char and tile != mark_char:
+                count += 1
+    return count
+
+
+def count_marked(_map):
+    count = 0
+    size = len(_map)
+    for row in range(size):
+        for col in range(size):
+            tile = _map[row][col]
+            if tile == mark_char:
+                count += 1
+    return count
+######################
+
+
+# Funções de alteração de mapas
 def reveal_tiles_around_zeros(player_map, game_map, coord):
     size = len(game_map)
     row, col = coord
@@ -279,8 +283,10 @@ def reveal_bombs(player_map, game_map):
             if game_map[row][col] == bomb_char:
                 player_map[row][col] = bomb_char
     return player_map
+######################
 
 
+# Menus
 def menu_loop():
     while True:
         print()
@@ -310,7 +316,6 @@ def menu_loop():
             print_invalid_input()
 
 
-# Menu de seleção de tamanho do campo
 def choose_size():
     print()
     print_separator()
@@ -342,8 +347,10 @@ def choose_size():
         return choose_size()
 
     return active_maps[choice - 1]
+######################
 
 
+# Lógica do jogo
 def start_game(map_selected):
     print()
     print_separator()
@@ -357,7 +364,6 @@ def start_game(map_selected):
     game_loop(player_map, game_map, map_selected)
 
 
-# Game loop principal de uma partida
 def game_loop(player_map, game_map, map_selected):
     # Variáveis para controle do jogo
     size = len(game_map)
@@ -432,6 +438,7 @@ def game_loop(player_map, game_map, map_selected):
         else:
             # Revela o tile escolhido
             player_map[row][col] = new_tile
+######################
 
 
 def game_win(map_selected, start_time):
