@@ -1,3 +1,4 @@
+from datetime import date
 import random
 import os
 import time
@@ -25,8 +26,6 @@ YELLOW = "\033[0;33m"
 MAGENTA = "\033[0;35m"
 CYAN = "\033[0;36m"
 
-BLACK = "\033[0;30m"
-
 RESET = "\033[0;0m"
 BOLD = "\033[;1m"
 REVERSE = "\033[;7m"
@@ -45,7 +44,7 @@ def read_file():
         for line in lines:
             split_line = line.split(";")
             score_data = {
-                "name": split_line[0], "map_size": split_line[1], "score": int(split_line[2][0:-1])}
+                "name": split_line[0], "map_size": split_line[1], "score": int(split_line[2]), "date": split_line[3][0:-1]}
             highscores.append(score_data)
 
 
@@ -53,7 +52,7 @@ def save_file():
     with open("./highscores.csv", "w") as arq:
         for match in highscores:
             arq.write(
-                f'{match["name"]};{match["map_size"]};{match["score"]}\n')
+                f'{match["name"]};{match["map_size"]};{match["score"]};{match["date"]}\n')
         print("Alterações salvas com sucesso.")
 ######################
 
@@ -63,14 +62,14 @@ def print_highscores():
     ordered_scores = sorted(
         highscores, key=lambda x: (x['map_size'], x['score']))
 
-    print("\Pontuações:\n")
+    print("\nPontuações:\n")
     print("Pos".ljust(5) + "Nome".ljust(20) +
-          "Tabuleiro".ljust(20) + "Tempo (s)".ljust(10))
-    print("-" * 55)
+          "Tabuleiro".ljust(15) + "Tempo (s)".rjust(10) + "Data".rjust(15))
+    print("-" * 65)
     for match in ordered_scores:
         i = str(ordered_scores.index(match)+1) + "."
-        print(i.ljust(5) + match['name'].ljust(20) + str(match['map_size']).ljust(20) +
-              str(match['score']).ljust(20))
+        print(i.ljust(5) + match['name'].ljust(20) + str(match['map_size']).ljust(15) +
+              str(match['score']).rjust(10) + str(match['date']).rjust(15))
     input("\nPressione [Enter] para voltar ao menu.\n")
 
 
@@ -94,7 +93,7 @@ def print_map(map):
 
     # Imprime o topo do tabuleiro
     print_coordinates(size)
-    print(padding + BLACK + "┌" + "───┬" * (size - 1) + "───┐" + RESET)
+    print(padding + "┌" + "───┬" * (size - 1) + "───┐")
 
     # Imprime as linhas do tabuleiro
     for row in range(size):
@@ -102,15 +101,15 @@ def print_map(map):
 
         for col in range(size):
             tile = stylize_tile(map[row][col])
-            print(f"{BLACK}│{tile}", end="")
+            print(f"│{tile}", end="")
 
-        print(f"{BLACK}│{RESET} {row + 1:2}")
+        print(f"│ {row + 1:2}")
 
         if row != size - 1:
-            print(padding + BLACK + "├" + "───┼" * (size - 1) + "───┤" + RESET)
+            print(padding + "├" + "───┼" * (size - 1) + "───┤")
 
     # Imprime a base do tabuleiro
-    print(padding + BLACK + "└" + "───┴" * (size - 1) + "───┘" + RESET)
+    print(padding + "└" + "───┴" * (size - 1) + "───┘")
     print_coordinates(size)
 
 
@@ -122,7 +121,7 @@ def stylize_tile(tile):
     if tile == mark_char:
         return RED + padded_tile + RESET
     if tile == empty_char or tile == "0":
-        return BLACK + padded_tile + RESET
+        return padded_tile
     if tile == "1":
         return GREEN + padded_tile + RESET
     if tile == "2":
@@ -458,9 +457,11 @@ def game_win(map_selected, start_time):
 
     player_name = ask_name()
 
+    today = date.today()
     match = {'name': player_name,
              'map_size': map_selected['name'],
-             'score': score}
+             'score': score,
+             'date': today.strftime("%d/%m/%Y")}
     highscores.append(match)
     save_file()
     print_highscores()
