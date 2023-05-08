@@ -4,18 +4,21 @@ import os
 import time
 
 # Configurações
-mark_command = "-m"
-bomb_char = "X"
-empty_char = " "
-mark_char = "!"
-padding = "   "
-highscores = []
+MARK_COMMAND = "-m"
+BOMB_CHAR = "X"
+HIDDEN_CHAR = " "
+MARK_CHAR = "!"
+PADDING = "   "
 
+# Mapas
 MAP_SMALL = {"name": "Pequeno", "size": 6, "bomb_amount": 5}
-MAP_MEDIUM = {"name": "Médio", "size": 9, "bomb_amount": 12}
-MAP_LARGE = {"name": "Grande", "size": 12, "bomb_amount": 20}
+MAP_MEDIUM = {"name": "Medio", "size": 9, "bomb_amount": 10}
+MAP_LARGE = {"name": "Grande", "size": 12, "bomb_amount": 15}
+MAP_GIGA = {"name": "Gigante", "size": 15, "bomb_amount": 20}
 
-active_maps = [MAP_SMALL, MAP_MEDIUM, MAP_LARGE]
+active_maps = [MAP_SMALL, MAP_MEDIUM, MAP_LARGE, MAP_GIGA]
+
+highscores = []
 
 # Cores
 RED = "\033[1;31m"
@@ -74,7 +77,7 @@ def print_highscores():
 
 
 def print_invalid_input():
-    print("\nEscolha inválida. Por favor, tente novamente.\n")
+    print(f"\n{RED}Escolha inválida.{RESET} Por favor, tente novamente.\n")
 
 
 def print_separator(size=32, char="="):
@@ -82,7 +85,7 @@ def print_separator(size=32, char="="):
 
 
 def print_coordinates(size):
-    print(padding + " ", end="")
+    print(PADDING + " ", end="")
     for col in range(size):
         print(f" {chr(col + ord('A'))} ", end=" ")
     print()
@@ -93,7 +96,7 @@ def print_map(map):
 
     # Imprime o topo do tabuleiro
     print_coordinates(size)
-    print(padding + "┌" + "───┬" * (size - 1) + "───┐")
+    print(PADDING + "┌" + "───┬" * (size - 1) + "───┐")
 
     # Imprime as linhas do tabuleiro
     for row in range(size):
@@ -106,21 +109,21 @@ def print_map(map):
         print(f"│ {row + 1:2}")
 
         if row != size - 1:
-            print(padding + "├" + "───┼" * (size - 1) + "───┤")
+            print(PADDING + "├" + "───┼" * (size - 1) + "───┤")
 
     # Imprime a base do tabuleiro
-    print(padding + "└" + "───┴" * (size - 1) + "───┘")
+    print(PADDING + "└" + "───┴" * (size - 1) + "───┘")
     print_coordinates(size)
 
 
 def stylize_tile(tile):
     tile = str(tile)
     padded_tile = " " + tile + " "
-    if tile == bomb_char:
+    if tile == BOMB_CHAR:
         return RED_BG + padded_tile + RESET
-    if tile == mark_char:
+    if tile == MARK_CHAR:
         return RED + padded_tile + RESET
-    if tile == empty_char or tile == "0":
+    if tile == HIDDEN_CHAR or tile == "0":
         return padded_tile
     if tile == "1":
         return GREEN + padded_tile + RESET
@@ -196,8 +199,8 @@ def generate_bomb_map(size, bomb_amount):
     while bombs_placed < bomb_amount:
         row = random.randint(0, size - 1)
         col = random.randint(0, size - 1)
-        if bomb_map[row][col] != bomb_char:
-            bomb_map[row][col] = bomb_char
+        if bomb_map[row][col] != BOMB_CHAR:
+            bomb_map[row][col] = BOMB_CHAR
             bombs_placed += 1
 
     return bomb_map
@@ -209,8 +212,8 @@ def generate_game_map(size, bombs):
 
     for row in range(size):
         for col in range(size):
-            if bomb_map[row][col] == bomb_char:
-                game_map[row][col] = bomb_char
+            if bomb_map[row][col] == BOMB_CHAR:
+                game_map[row][col] = BOMB_CHAR
             else:
                 bombs_around = count_bombs_around(bomb_map, row, col)
                 game_map[row][col] = bombs_around
@@ -225,7 +228,7 @@ def count_bombs_around(bomb_map, row, col):
     bombs_around = 0
     for row_around in range(max(0, row - 1), min(size, row + 2)):
         for col_around in range(max(0, col - 1), min(size, col + 2)):
-            if bomb_map[row_around][col_around] == bomb_char:
+            if bomb_map[row_around][col_around] == BOMB_CHAR:
                 bombs_around += 1
     return bombs_around
 
@@ -236,7 +239,7 @@ def count_revealed(_map):
     for row in range(size):
         for col in range(size):
             tile = _map[row][col]
-            if tile != empty_char and tile != mark_char:
+            if tile != HIDDEN_CHAR and tile != MARK_CHAR:
                 count += 1
     return count
 
@@ -247,7 +250,7 @@ def count_marked(_map):
     for row in range(size):
         for col in range(size):
             tile = _map[row][col]
-            if tile == mark_char:
+            if tile == MARK_CHAR:
                 count += 1
     return count
 ######################
@@ -265,7 +268,7 @@ def reveal_tiles_around_zeros(player_map, game_map, coord):
     # Loop para revelar os tiles ao redor do tile atual
     for row_around in range(max(0, row - 1), min(size, row + 2)):
         for col_around in range(max(0, col - 1), min(size, col + 2)):
-            if player_map[row_around][col_around] == empty_char:
+            if player_map[row_around][col_around] == HIDDEN_CHAR:
                 player_map[row_around][col_around] = game_map[row_around][col_around]
                 # Chamada recursiva para revelar os tiles ao redor do tile atual
                 player_map = reveal_tiles_around_zeros(
@@ -279,8 +282,8 @@ def reveal_bombs(player_map, game_map):
     size = len(game_map)
     for row in range(size):
         for col in range(size):
-            if game_map[row][col] == bomb_char:
-                player_map[row][col] = bomb_char
+            if game_map[row][col] == BOMB_CHAR:
+                player_map[row][col] = BOMB_CHAR
     return player_map
 ######################
 
@@ -290,12 +293,12 @@ def menu_loop():
     while True:
         print()
         print_separator()
-        print(f"{padding}{title}")
+        print(f"{PADDING}{title}")
         print_separator(size=16, char=' -')
-        print(f"{padding}1. Jogar")
-        print(f"{padding}2. Ver Pontuações")
+        print(f"{PADDING}1. Jogar")
+        print(f"{PADDING}2. Ver Pontuações")
         print()
-        print(f"{padding}{RED}0. Sair{RESET}")
+        print(f"{PADDING}{RED}0. Sair{RESET}")
         print_separator()
 
         choice = input("\nSua escolha =>")
@@ -318,16 +321,16 @@ def menu_loop():
 def choose_size():
     print()
     print_separator()
-    print(f"{padding}Tamanho do campo")
+    print(f"{PADDING}Tamanho do campo")
     print_separator(size=16, char=' -')
 
     for _map in active_maps:
         index = active_maps.index(_map) + 1
         formated_size = f"({_map['size']}x{_map['size']})"
-        print(f"{padding}{index}. {_map['name']} {formated_size}")
+        print(f"{PADDING}{index}. {_map['name']} {formated_size}")
 
     print()
-    print(f"{padding}{RED}0. Cancelar{RESET}")
+    print(f"{PADDING}{RED}0. Cancelar{RESET}")
     print_separator()
 
     choice = input("\nSua escolha =>")
@@ -356,7 +359,7 @@ def start_game(map_selected):
     print("Carregando ... ", end="")
     size = map_selected['size']
     bomb_amount = map_selected['bomb_amount']
-    player_map = generate_map(size, char=empty_char)
+    player_map = generate_map(size, char=HIDDEN_CHAR)
     game_map = generate_game_map(size, bomb_amount)
     print("pronto!")
     print_separator()
@@ -383,29 +386,28 @@ def game_loop(player_map, game_map, map_selected):
 
         # Encerra o jogo se o jogador revelou todos os tiles seguros
         if revealed_amount == safe_amount:
-            game_win(map_selected, start_time)
+            game_win(player_map, map_selected, start_time)
             break
 
         # Mostra o mapa e instruções para o jogador
         print()
         print_map(player_map)
-        print(f'Revelados: {revealed_amount}/{safe_amount}', end=" | ")
-        print(f'Marcados: {marked_amount}',  end=" | ")
-        print(f'Bombas: {bomb_amount}\n')
-        print('Digite a coordenada para jogar, ex: =>A1')
-        print('Adicione -m para marcar uma bomba, ex: =>A1 -m')
-        print('E para desistir, digite 0\n')
+        print(f'{GREEN}Revelados: {revealed_amount}/{safe_amount}{RESET}', end=" | ")
+        print(f'{YELLOW}Marcados: {marked_amount}{RESET}{RESET}',  end=" / ")
+        print(f'{RED}Bombas: {bomb_amount}{RESET}\n')
+        print(f'Digite a coordenada para jogar, ex: {CYAN}=>{RESET}A1')
+        print(f'Adicione -m para marcar uma bomba, ex: {CYAN}=>{RESET}A1 -m')
+        print(f'E para desistir, digite {RED}0{RESET}\n')
 
         # Pega a jogada do jogador e valida
-        player_input = input("Sua jogada =>")
+        player_input = input(f"Sua jogada {CYAN}=>{RESET}")
         if player_input == "0":
             game_over(player_map, game_map)
             break
         if player_input == "win":
-            game_win(map_selected, start_time)
+            game_win(player_map, map_selected, start_time)
             break
         coord, command = validate_input(player_input, valid_coords)
-
         # Se a jogada for inválida, mostra mensagem de erro e pede outra jogada
         if coord == None:
             print_invalid_input()
@@ -423,12 +425,12 @@ def game_loop(player_map, game_map, map_selected):
 
         # Verifica se o jogador marcou um tile ou se clicou em um tile
         if command != None and "-m" in command:
-            new_tile = mark_char if player_tile == empty_char else empty_char
+            new_tile = MARK_CHAR if player_tile == HIDDEN_CHAR else HIDDEN_CHAR
         else:
             new_tile = game_tile
 
         # Computa a jogada
-        if new_tile == bomb_char:
+        if new_tile == BOMB_CHAR:
             game_over(player_map, game_map)
             break
         elif new_tile == 0:
@@ -440,7 +442,9 @@ def game_loop(player_map, game_map, map_selected):
 ######################
 
 
-def game_win(map_selected, start_time):
+# Fim de Jogo
+def game_win(player_map, map_selected, start_time):
+    print_map(player_map)
     end_time = time.time()
     time_in_seconds = end_time - start_time
     score = int(time_in_seconds)
@@ -468,6 +472,9 @@ def game_win(map_selected, start_time):
 
 
 def game_over(player_map, game_map):
+    revealed_map = reveal_bombs(player_map, game_map)
+    print_map(revealed_map)
+
     print(RED+"  ____     ____     ____    __  __   _ ")
     print(" |  _ \\   / __ \\   / __ \\  |  \\/  | | |")
     print(" | |_) | | |  | | | |  | | | \\  / | | |")
@@ -476,10 +483,8 @@ def game_over(player_map, game_map):
     print(" |____/   \\____/   \\____/  |_|  |_| (_)" + RESET)
     print("\nVocê perdeu! Cheque o mapa revelado!\n")
 
-    revealed_map = reveal_bombs(player_map, game_map)
-
-    print_map(revealed_map)
     input("\nPressione [Enter] para voltar ao menu.\n")
+######################
 
 
 read_file()
