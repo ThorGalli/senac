@@ -16,7 +16,7 @@ MAP_MEDIUM = {"name": "Medio", "size": 9, "bomb_amount": 10}
 MAP_LARGE = {"name": "Grande", "size": 12, "bomb_amount": 15}
 MAP_GIGA = {"name": "Gigante", "size": 15, "bomb_amount": 20}
 
-active_maps = [MAP_SMALL, MAP_MEDIUM, MAP_LARGE, MAP_GIGA]
+active_maps = [MAP_SMALL, MAP_MEDIUM, MAP_LARGE]
 
 highscores = []
 
@@ -380,19 +380,19 @@ def game_loop(player_map, game_map, map_selected):
     start_time = time.time()
     # Loop principal do jogo
     while True:
-        # Conta a quantidade de tiles seguros e marcados
-        safe_amount = count_revealed(player_map)
+        # Conta a quantidade de tiles revelados e marcados
+        revealed_amount = count_revealed(player_map)
         marked_amount = count_marked(player_map)
 
         # Encerra o jogo se o jogador revelou todos os tiles seguros
-        if safe_amount == safe_amount:
+        if revealed_amount == safe_amount:
             game_win(player_map, map_selected, start_time)
             break
 
         # Mostra o mapa e instruções para o jogador
         print()
         print_map(player_map)
-        print(f'{GREEN}Seguros: {safe_amount}/{safe_amount}{RESET}', end=" | ")
+        print(f'{GREEN}Seguros: {revealed_amount}/{safe_amount}{RESET}', end=" | ")
         print(f'{YELLOW}Marcados: {marked_amount}{RESET}{RESET}',  end=" / ")
         print(f'{RED}Bombas: {bomb_amount}{RESET}\n')
         print(f'Digite a coordenada para jogar, ex: {CYAN}=>{RESET}A1')
