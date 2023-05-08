@@ -380,19 +380,19 @@ def game_loop(player_map, game_map, map_selected):
     start_time = time.time()
     # Loop principal do jogo
     while True:
-        # Conta a quantidade de tiles revelados e marcados
-        revealed_amount = count_revealed(player_map)
+        # Conta a quantidade de tiles seguros e marcados
+        safe_amount = count_revealed(player_map)
         marked_amount = count_marked(player_map)
 
         # Encerra o jogo se o jogador revelou todos os tiles seguros
-        if revealed_amount == safe_amount:
+        if safe_amount == safe_amount:
             game_win(player_map, map_selected, start_time)
             break
 
         # Mostra o mapa e instruções para o jogador
         print()
         print_map(player_map)
-        print(f'{GREEN}Revelados: {revealed_amount}/{safe_amount}{RESET}', end=" | ")
+        print(f'{GREEN}Seguros: {safe_amount}/{safe_amount}{RESET}', end=" | ")
         print(f'{YELLOW}Marcados: {marked_amount}{RESET}{RESET}',  end=" / ")
         print(f'{RED}Bombas: {bomb_amount}{RESET}\n')
         print(f'Digite a coordenada para jogar, ex: {CYAN}=>{RESET}A1')
