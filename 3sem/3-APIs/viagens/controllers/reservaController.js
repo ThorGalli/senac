@@ -23,7 +23,7 @@ export const reservaCreate = async (req, res) => {
         return;
     }
 
-    const t = await sequelize.transaction();
+    const trans = await sequelize.transaction();
 
     try {
         const reserva = await Reserva.create(
@@ -32,7 +32,7 @@ export const reservaCreate = async (req, res) => {
                 excursao_id,
                 preco,
             },
-            { transaction: t }
+            { transaction: trans }
         );
 
         const excursaoToUpdate = await Excursao.findOne({
@@ -50,13 +50,13 @@ export const reservaCreate = async (req, res) => {
         await Excursao.increment("total_reservas", {
             by: 1,
             where: { id: excursao_id },
-            transaction: t,
+            transaction: trans,
         });
 
-        await t.commit();
+        await trans.commit();
         res.status(201).json(reserva);
     } catch (error) {
-        await t.rollback();
+        await trans.rollback();
         const msg = error || "";
         res.status(400).json({
             id: 0,
