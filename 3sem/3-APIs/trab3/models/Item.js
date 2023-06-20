@@ -15,8 +15,8 @@ export const Item = sequelize.define(
             allowNull: false,
         },
         descricao: {
-            type: DataTypes.INTEGER,
-            defaultValue: 0,
+            type: DataTypes.STRING(200),
+            allowNull: false,
         },
         em_anuncio: {
             type: DataTypes.BOOLEAN,
