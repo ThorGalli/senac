@@ -2,6 +2,8 @@ import bcrypt from "bcrypt";
 
 import { Usuario } from "../models/Usuario.js";
 import { Log } from "../models/Log.js";
+import { Item } from "../models/Item.js";
+import { Anuncio } from "../models/Anuncio.js";
 
 function validaSenha(senha) {
     const mensa = [];
@@ -45,8 +47,26 @@ function validaSenha(senha) {
 
 export const usuarioIndex = async (req, res) => {
     try {
-        const usuarios = await Usuario.findAll();
+        const usuarios = await Usuario.findAll({
+            include: [Item, { model: Anuncio, include: Item }],
+        });
         res.status(200).json(usuarios);
+    } catch (error) {
+        res.status(400).send(error);
+    }
+};
+
+export const me = async (req, res) => {
+    const id = req.user_logado_id;
+    try {
+        const usuario = await Usuario.findOne({
+            where: { id },
+            include: [
+                { model: Item, where: { em_anuncio: false } },
+                { model: Anuncio, include: Item },
+            ],
+        });
+        res.status(200).json(usuario);
     } catch (error) {
         res.status(400).send(error);
     }
@@ -57,7 +77,7 @@ export const usuarioGet = async (req, res) => {
     try {
         const usuario = await Usuario.findOne({
             where: { id },
-            include: [Item, { model: Anuncio, include: Item }],
+            include: Item,
         });
         res.status(200).json(usuario);
     } catch (error) {

@@ -1,24 +1,33 @@
-import { Router } from "express"
-import { usuarioAlteraSenha, usuarioCreate, usuarioIndex } from "./controllers/usuarioController.js"
-import { avaliacaoCreate, avaliacaoDestroy, avaliacaoIndex } from "./controllers/avaliacaoController.js"
-import { restauranteCreate, restauranteDestroy, restauranteIndex } from "./controllers/restauranteController.js"
-import { loginUsuario } from "./controllers/loginController.js"
-import { verificaLogin } from "./middlewares/verificaLogin.js"
+import { Router } from "express";
+import {
+    me,
+    usuarioAlteraSenha,
+    usuarioCreate,
+    usuarioIndex,
+} from "./controllers/usuarioController.js";
+import { loginUsuario } from "./controllers/loginController.js";
+import { verificaLogin } from "./middlewares/verificaLogin.js";
+import { itemCreate } from "./controllers/itemController.js";
+import {
+    anuncioCreate,
+    anuncioIndex,
+} from "./controllers/anuncioController.js";
 
-const router = Router()
+const router = Router();
 
-router.get('/usuarios', verificaLogin, usuarioIndex)
-      .post('/usuarios', usuarioCreate)
-      .put('/usuarios', usuarioAlteraSenha)
+// Publicas
+router.get("/anuncios", anuncioIndex);
+router.get("/login", loginUsuario);
 
-router.get('/avaliacoes', avaliacaoIndex)
-      .post('/avaliacoes', avaliacaoCreate)
-      .delete('/avaliacoes/:id', avaliacaoDestroy)
+router
+    .post("/usuarios", usuarioCreate) //
+    .put("/usuarios", usuarioAlteraSenha);
 
-router.get('/restaurantes', restauranteIndex)
-      .post('/restaurantes', restauranteCreate)
-      .delete('/restaurantes/:id', verificaLogin, restauranteDestroy)
+// Protegidas
+router
+    .get("/usuarios", verificaLogin, usuarioIndex)
+    .get("/me", verificaLogin, me);
+router.post("/anuncios", verificaLogin, anuncioCreate);
+router.post("/itemCreate", verificaLogin, itemCreate);
 
-router.get('/login', loginUsuario)
-
-export default router
+export default router;

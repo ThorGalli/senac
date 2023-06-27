@@ -1,6 +1,5 @@
 import { DataTypes } from "sequelize";
 import { sequelize } from "../databases/conecta.js";
-import { Restaurante } from "./Restaurante.js";
 import { Usuario } from "./Usuario.js";
 import { Item } from "./Item.js";
 
@@ -15,6 +14,10 @@ export const Anuncio = sequelize.define(
         preco: {
             type: DataTypes.INTEGER,
             allowNull: false,
+        },
+        status: {
+            type: DataTypes.STRING(12),
+            defaultValue: "ACTIVE",
         },
     },
     {
