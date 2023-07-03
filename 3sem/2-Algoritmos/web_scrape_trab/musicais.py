@@ -324,6 +324,31 @@ def display_statistics():
     print(f'(economia de {display_as_BRL(soma_geral - soma_geral_desconto)} comprando a vista)')
 
 
+def eliminate_duplicates():
+    global data_megasom, data_tritons
+    print("\nEliminando duplicatas...")
+    prev_total_megasom = len(data_megasom)
+    prev_total_tritons = len(data_tritons)
+
+    data_megasom = [dict(t) for t in {tuple(d.items()) for d in data_megasom}]
+    data_tritons = [dict(t) for t in {tuple(d.items()) for d in data_tritons}]
+
+    novo_total_megasom = len(data_megasom)
+    novo_total_tritons = len(data_tritons)
+    deletados_megasom = prev_total_megasom - novo_total_megasom
+    deletados_tritons = prev_total_tritons - novo_total_tritons
+    deletados_total = deletados_megasom+deletados_tritons
+    if (deletados_total ==0):
+        print("Nenhuma duplicata encontrada!\n")
+        return
+
+    print("Foram eliminadas:")
+    print(f"{deletados_megasom} duplicatas da Megasom")
+    print(f"{deletados_tritons} duplicatas da Tritons")
+    print("-----------------------------------")
+    print(f"Total de duplicatas eliminadas: {deletados_total}\n")
+
+
 def delete_all_data():
     user_input = input("Tem certeza que deseja apagar todos os dados? [s/n] =>")
     if user_input.lower() == "s":
@@ -355,9 +380,10 @@ def exibir_menu():
     print("┣[4] Preferencias de Ordenação")
     print("┣[5] Pesquisar por palavra (ou parte dela)")
     print("┣[6] Pesquisar intervalo de preço")
-    print("┣[7] Exibir estatísticas")
-    print("┣[8] Limpar tudo")
-    print("┗[9] Sair")
+    print("┣[7] Eliminar Duplicatas")
+    print("┣[8] Exibir estatísticas")
+    print("┣[9] Limpar tudo")
+    print("┗[0] Sair")
 
 while True:
     exibir_menu()
@@ -381,10 +407,12 @@ while True:
         upper = input("Digite o valor final (0 para infinito) => R$ ")
         search_by_price(lower, upper)
     elif opcao == "7":
-        display_statistics()
+        eliminate_duplicates()
     elif opcao == "8":
-        delete_all_data()
+        display_statistics()
     elif opcao == "9":
+        delete_all_data()
+    elif opcao == "0":
         break
     else:
         print("\n ~~ Opção inválida, tente novamente. ~~ \n")
