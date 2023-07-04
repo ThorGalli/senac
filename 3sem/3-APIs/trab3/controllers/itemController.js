@@ -8,7 +8,6 @@ export const itemCreate = async (req, res) => {
     const usuarioId = req.user_logado_id;
     const trans = await sequelize.transaction();
 
-    console.log("\n~~~~\nStart try item create");
     try {
         const user = await Usuario.findOne({ where: { id: usuarioId } });
         if (user.coins < 5) {

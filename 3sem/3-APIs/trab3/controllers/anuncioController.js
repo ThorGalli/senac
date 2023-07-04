@@ -56,8 +56,8 @@ export const anuncioIndex = async (req, res) => {
     }
 };
 
-export const anuncioCancel = async (res, req) => {
-    const { anuncio_id } = req.param;
+export const anuncioCancel = async (req, res) => {
+    const { id: anuncio_id } = req.params;
     const usuario_id = req.user_logado_id;
 
     const trans = await sequelize.transaction();
@@ -66,21 +66,73 @@ export const anuncioCancel = async (res, req) => {
         const user = await Usuario.findOne({ where: { id: usuario_id } });
         const anuncio = await Anuncio.findOne({ where: { id: anuncio_id } });
         const item = await Item.findOne({ where: { anuncioId: anuncio_id } });
-        if (!user || !anuncio || anuncio.usuario_id != user.id) {
+
+        if (!user || !anuncio || !item || anuncio.usuario_id != user.id) {
             res.status(406).json({ msg: "Item não encontrado." });
-        } else if (item.em_anuncio) {
-            res.status(406).json({ msg: "Esse item já está em anúncio." });
+            return;
+        } else if (!item.em_anuncio) {
+            res.status(406).json({ msg: "Esse item não está em anúncio." });
+            return;
+        }
+        await anuncio.update({ status: "CANCELED" }, { transaction: trans });
+        await anuncio.destroy({ transaction: trans });
+        await item.update(
+            { em_anuncio: false, anuncioId: null },
+            {
+                where: { id: item.id },
+                transaction: trans,
+            }
+        );
+
+        await trans.commit();
+        res.status(201).json(anuncio);
+    } catch (error) {
+        res.status(400).send(error);
+    }
+};
+
+export const anuncioComprar = async (req, res) => {
+    const { id: anuncio_id } = req.params;
+    const compradorId = req.user_logado_id;
+
+    const trans = await sequelize.transaction();
+    try {
+        const anuncio = await Anuncio.findOne({ where: { id: anuncio_id } });
+        const item = await Item.findOne({ where: { anuncioId: anuncio_id } });
+        const comprador = await Usuario.findOne({ where: { id: compradorId } });
+        const vendedor = await Usuario.findOne({
+            where: { id: item.usuarioId },
+        });
+
+        const preco = anuncio.preco;
+
+        if (!comprador || !anuncio || !item || !vendedor) {
+            res.status(406).json({ msg: "Item não encontrado." });
+            return;
+        } else if (!item.em_anuncio) {
+            res.status(406).json({ msg: "Esse item não está em anúncio." });
+            return;
+        } else if (comprador.id == vendedor.id) {
+            res.status(406).json({
+                msg: "Você não pode comprar seu próprio item.",
+            });
+            return;
         }
 
-        await Anuncio.create(
-            {
-                usuario_id,
-                preco,
-            },
-            { transaction: trans }
-        );
+        await anuncio.update({ status: "CLOSED" }, { transaction: trans });
+        await anuncio.destroy({ transaction: trans });
+        await comprador.decrement("coins", {
+            by: preco,
+            transaction: trans,
+        });
+
+        await vendedor.increment("coins", {
+            by: preco,
+            transaction: trans,
+        });
+
         await item.update(
-            { em_anuncio: true, anuncioId: anuncio.id },
+            { em_anuncio: false, anuncioId: null, usuarioId: compradorId },
             {
                 where: { id: item.id },
                 transaction: trans,

@@ -1,30 +1,23 @@
 import bcrypt from "bcrypt";
 
 import { Usuario } from "../models/Usuario.js";
-import { Log } from "../models/Log.js";
 import { Item } from "../models/Item.js";
 import { Anuncio } from "../models/Anuncio.js";
+import { logAction } from "./logController.js";
 
 function validaSenha(senha) {
     const mensa = [];
 
-    // .length: retorna o tamanho da string (da senha)
     if (senha.length < 8) {
         mensa.push("Erro... senha deve possuir, no mínimo, 8 caracteres");
     }
 
-    // contadores
     let pequenas = 0;
     let grandes = 0;
     let numeros = 0;
     let simbolos = 0;
 
-    // senha = "abc123"
-    // letra = "a"
-
-    // percorre as letras da variável senha
     for (const letra of senha) {
-        // expressão regular
         if (/[a-z]/.test(letra)) {
             pequenas++;
         } else if (/[A-Z]/.test(letra)) {
@@ -58,13 +51,11 @@ export const usuarioIndex = async (req, res) => {
 
 export const me = async (req, res) => {
     const id = req.user_logado_id;
+
     try {
         const usuario = await Usuario.findOne({
             where: { id },
-            include: [
-                { model: Item, where: { em_anuncio: false } },
-                { model: Anuncio, include: Item },
-            ],
+            include: [{ model: Item }, { model: Anuncio, include: Item }],
         });
         res.status(200).json(usuario);
     } catch (error) {
@@ -88,7 +79,12 @@ export const usuarioGet = async (req, res) => {
 export const usuarioCreate = async (req, res) => {
     const { nome, email, senha } = req.body;
 
-    // se não informou estes atributos
+    const alreadyExists = await Usuario.findOne({ where: { email } });
+    if (alreadyExists) {
+        res.status(400).json({ id: 0, msg: "Erro... Email já está em uso" });
+        return;
+    }
+
     if (!nome || !email || !senha) {
         res.status(400).json({ id: 0, msg: "Erro... Informe os dados" });
         return;
@@ -113,45 +109,36 @@ export const usuarioCreate = async (req, res) => {
 };
 
 export const usuarioAlteraSenha = async (req, res) => {
-    const { email, senha, novaSenha } = req.body;
+    const id = req.user_logado_id;
+    const { senha_antiga, senha_nova } = req.body;
 
-    // se não informou estes atributos
-    if (!email || !senha || !novaSenha) {
+    if (!senha_antiga || !senha_nova) {
         res.status(400).json({ id: 0, msg: "Erro... Informe os dados" });
         return;
     }
 
     try {
-        const usuario = await Usuario.findOne({ where: { email } });
+        const usuario = await Usuario.findOne({ where: { id } });
 
         if (usuario == null) {
             res.status(400).json({ erro: "Erro... E-mail inválido" });
             return;
         }
 
-        const mensaValidacao = validaSenha(novaSenha);
+        const mensaValidacao = validaSenha(senha_nova);
         if (mensaValidacao.length >= 1) {
             res.status(400).json({ id: 0, msg: mensaValidacao });
             return;
         }
 
-        if (bcrypt.compareSync(senha, usuario.senha)) {
-            // gera a criptografia da nova senha
+        if (bcrypt.compareSync(senha_antiga, usuario.senha)) {
             const salt = bcrypt.genSaltSync(12);
-            const hash = bcrypt.hashSync(novaSenha, salt);
+            const hash = bcrypt.hashSync(senha_nova, salt);
             usuario.senha = hash;
-
-            // salva a nova senha
             await usuario.save();
-
             res.status(200).json({ msg: "Ok. Senha Alterada com Sucesso" });
         } else {
-            // registra um log desta tentativa de troca de senha
-            await Log.create({
-                descricao: "Tentativa de Alteração de Senha",
-                usuario_id: usuario.id,
-            });
-
+            await logAction("Tentativa de alteração de senha", id);
             res.status(400).json({ erro: "Erro... Senha inválida" });
         }
     } catch (error) {

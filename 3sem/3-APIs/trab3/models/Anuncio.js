@@ -21,7 +21,7 @@ export const Anuncio = sequelize.define(
         },
     },
     {
-        // optional args
+        paranoid: true,
     }
 );
 
