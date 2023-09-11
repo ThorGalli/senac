@@ -1,0 +1,116 @@
+    1  history
+    2  ls
+    3  ls -l
+    4  ls -la
+    5  clear
+    6  ls -lh
+    7  ls -lr
+    8  clear
+    9  mkdir thor
+   10  mkdir "Sistemas Operacionais"
+   11  ls
+   12  mkdir -p ~/tmp/Diretorio
+   13  cd ~/tmp/Diretorio
+   14  cd ~
+   15  mkdir -m 700 ~/exclusivo
+   16  ls -l
+   17  cd /home/thor
+   18  ls
+   19  rmdir "Sistemas Operacionais"
+   20  ls
+   21  mv ~/exclusivo ~/tmp/Diretorio
+   22  cd ~/tmp/Diretorio
+   23  ls
+   24  ls -l
+   25  cd ~
+   26  ls -l
+   27  cd /
+   28  ls -l
+   29  cp /etc ~/tmp/Diretorio
+   30  cp -r /etc ~/tmp/Diretorio
+   31  cd etc
+   32  cd ~/tmp/Diretorio
+   33  ls
+   34  cd ~/tmp/Diretorio/etc.bkp
+   35  cp -r /etc ~/tmp/Diretorio/etc.bkp
+   36  ls
+   37  touch touch ~/tmp/Diretorio/exclusivo/dados
+   38  ls
+   39  cd exclusivo
+   40  ls
+   41  touch ~/tmp/Diretorio/exclusivo/dados -t 201612092132
+   42  touch ~/tmp/Diretorio/teste
+   43  ls
+   44  ls -l
+   45  rm ~/tmp/Diretorio/teste
+   46  rm -r ~/tmp/Diretorio/etc.bkp
+   47  cat /etc/passwd
+   48  echo thor
+   49  echo "Aula de SO" > registro
+   50  ls
+   51  cat registro
+   52  echo "Gerenciamento de arquivos" >> registro
+   53  ls
+   54  cat registro
+   55  locate passwd
+   56  locate dados
+   57  apt install plocate
+   58  locate passwd
+   59  locate dados
+   60  stat ~/tmp/Diretorio/dados
+   61  file /etc/passwd
+   62  file ~/tmp/Diretorio/dados
+   63  touch ~/tmp/Diretorio/dados
+   64  file ~/tmp/Diretorio/dados
+   65  stat ~/tmp/Diretorio/dados
+   66  df
+   67  df -h
+   68  df -T
+   69  stat
+   70  stat man
+   71  man stat
+   72  stat ~/tmp/Diretorio/dados
+   73  du *
+   74  man du
+   75  du /etc
+   76  du -h /etc
+   77  wc /etc/passwd
+   78  man wc
+   79  cat /etc/passwd | sort
+   80  clear
+   81  cat /etc/passwd | sort
+   82  clear
+   83  tail /etc/passwd
+   84  man tail
+   85  tail-n 5 /etc/passwd
+   86  tail -n 5 /etc/passwd
+   87  head /etc/passwd
+   88  head n -15 /etc/passwd
+   89  head -n 15 /etc/passwd
+   90  history
+   91  date
+   92  date -s 20170521
+   93  clear
+   94  man wget
+   95  wget
+   96  wget google.com
+   97  uptime
+   98  man uptime
+   99  freee
+  100  free
+  101  man shutdown
+  102  shutdown -k now
+  103  shutdown -k 30
+  104  shutdown -c
+  105  shutdown -r 30 "O Sistema será reiniciado para aplicação de atualizações"
+  106  shutdown -c
+  107  history
+  108  cd /
+  109  ls
+  110  cd home
+  111  cd thor
+  112  ls
+  113  cd Desktop
+  114  clear
+  115  ls
+  116  history > history.txt
