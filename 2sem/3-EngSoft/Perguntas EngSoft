@@ -1,0 +1,42 @@
+1)
+ a) A presença de etapas de consulta com cliente, desenvolvimento, testes, correções e entrega.
+ 
+ b) Pequenos:	Codifica-Corrige, Cascata.
+    Médios:	V, Metodologia Ágil.
+    Grandes:	V, Metodologia Ágil, (*com restrições*) Cascata.
+
+ c) Sim, o modelo cascata é vantajoso em times altamente organizados e objetivos claramente definidos, principalmente em casos de desenvolvimento de um software de uma empresa para si mesma. Ex: HP desenvolvendo seu pŕoprio software para suas impressoras. 
+ 
+2)
+ d) F
+ e) N
+ f) F
+ g) N
+ h) N
+ i) N
+ j) F
+ k) N
+ l) F
+ m) N
+ n) F
+ o) N
+ p) F
+ q) N
+ r) N
+ s) N
+ t) N
+ 
+3)
+ a) Requisitos funcionais:
+  RF1: o sistema deve ler a matrícula do aluno para identificar e autorizar o usuário.
+  RF2: o sistema deve pesquisar livros.
+  RF3: o sistema deve consultar o estoque dos livros.
+  RF4: o sistema deve registrar locações de livros na matrícula do aluno.
+  RF5: o sistema deve mostrar locações correntes e passadas na matrícula do aluno.
+  RF6: o sistema deve registrar devoluções de livros na matrícula do aluno.
+  RF7: o sistema deve atualizar o estoque de livros na locação e devolução.
+
+ b) Requisitos não funcionais:
+  RNF1: o sistema deve manter informações persistentes e atualizadas de alunos e livros.
+  RNF2: o sistema deve de autoatendimento deve confirmar a identidade do aluno.
+  RNF3: o sistema deve gravar data e hora de locação e devolução.

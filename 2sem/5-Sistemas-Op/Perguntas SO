@@ -1,0 +1,40 @@
+1. O que é Linux? Como ele surgiu?
+	R: Linux é o kernel do sistema operacional GNU, mas também é comum que se chame esse sistema operacional de Linux. O sistema GNU/Linux surgiu devido a um esforço de comunidade para a criação de um "software livre" e acabou sendo montado por partes desenvolvidas por múltiplas pessoas.
+	
+	
+2. Linus Torvald colocou logo no inicio do documentário que o usuário nunca deveria notar a presença do S.O. e em seguida justificou. Explique com suas palavras o motivo.
+	R: ara essa afirmação, parte-se do princípio de que o sistema operacional deveria servir "apenas" para fazer a ponte entre os softwares instalados e o hardware do computador. Linus afirma, de certa maneira, que quanto menor e mais invisível ao usuário esta ponte for, melhor seria sistema operacional.
+
+
+3. Qual a grande diferença arquitetural entre o kernel de Richard Stallman ae o de Linus Torvald?
+	R: O kernel de Richard seria modular, ao estilo microserviços. Enquanto o kernel de Linus seria um monolito. Enquanto o modular teria várias mini aplicações que se comunicam (podendo haver falhas de comunicação), o monolito é uma grande aplicação que controla tudo.
+
+
+4. Por que, segundo Richard Stallman, o sistema operacional GNU (HURD) embora tenha sido iniciado antes do Linux, não foi lançado antes do sistema do Linus Torvald?
+	R: Porque as falhas de comunicação eram muitas, e os "bugs" causados por elas dificultavam muito o desenvolvimento e produto final.
+
+5. Uma grase dita por Stallman foi: "Software Livre não se refere ao preço, mas à liberdade". Comente esta grase. Software livre não é gratuito?
+	R: Sim, é gratuito. Mas além disso, é honesto: todo o código e arquitetura do sistema é livre para que qualquer um SAIBA como é e como foi feito.
+
+6. No filme são citadas algumas maneiras de ganhar dinheiro com Software Livre. Cite algumas delas.
+	R: Suporte técnico, desenvolvimento de aplicações específicas a um uso requisitado.
+
+7. Qual a relação entre GNU e Linux?
+	R: GNU é o sistema operacional incompleto, ele tem um "buraco vazio": onde é adicionado Linux como Kernel. Então tem-se o sistema operacional GNU/Linux.
+
+8. Qual foi o fator crucial para o crescimento da adoção do Linux, segundo Eric Raymond?
+	R: O lançamento do Apache Server.
+
+9. Qual o grande problema da expressão "Software Livre" segundo os idealizadores do "código aberto"?
+	R: A existência de regras de uso atreladas ao software, mesmo que "livre".
+
+10. Qual a diferença entre Software Livre, Freeware e Código Aberto?
+	R: Freeware: gratuito mas código indisponível.
+	   Código aberto: gratuito e código disponível.
+	   Software livre: gratuito, código disponível mas com regras de uso.
+
+11. Houve uma grande discussão entre Andrew Tannenbaum e Linus Torvald no início da década de 90, sobre qual seria a arquitetura ideal para o desenvolvimento de Sistemas Operacionais. Pesquise sobre essa discussão, aponte os pontos positivos e negativos de cada uma delas e posicione-se com relação às arquiteturas (entre 12 e 15 linhas).
+	R: Um sistema monolítico, como o de Linus Torvald, é rígido por natureza, é mais fechado à mudanças e atualizações. Porém é um sistema mais fácil de se desenvolver, de corrigir bugs e de ter controle absoluto de tudo que está acontecendo. Já num sistema de micronúcleos, como argumenta Andrew Tannenbaum, tem-se um sistema mais escalável, adaptável, dinâmico e, junto disso, mais abertura para problemas. 
+	 Embora acredite que a modularização de serviços em softwares seja de muita vantagem, principalmente por razões de organização e escalabilidade, acredito que o sistema monolítico cai bem para sistemas operacacionais, já que muitas das tarefas de um S.O. são rotineiras e bem conhecidas (manutenção de recursos do hardware, principalmente). Faz sentido que o sistema tenha um "motor" operacional sólido, deixemos as modularizações para os softwares e serviços instalados nele.
+
+

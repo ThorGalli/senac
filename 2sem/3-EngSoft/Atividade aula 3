@@ -1,0 +1,63 @@
+1. 1) Entrevista: 
+	Utilizando menos recursos humanos do que a reunião, a entrevista é capaz de trazer informações de diversas maneiras. 
+	O entrevistador pode atacar pontos críticos com perguntas diretas quando necessário.
+	O entrevistador pode mudar o rumo/ritmo da entrevista conforme o seu decorrer.
+	O entrevistado pode trazer informações inesperadas valiosas.
+	A comunicação corporal é capaz de expressar aspectos não verbalizados ao entrevistador.
+
+   2) Questionário:
+	Excelente maneira de obter informações em massa. Seria inviável entrevistar ou fazer uma reunião com 100.000 desenvolvedores para descobrir quais aspectos da ferramente "X" são bons, ruins, precisam melhorias, etc.
+	Com um questionário é possivel "digerir" as informações a fim de ter uma visão geral sobre o assunto.
+	
+   3) Reunião:
+	De acordo com Benjamin Franklin: "Tempo é dinheiro". Logo uma reunião (a qual exige que vários indivíduos disponham de seu tempo) é cara por natureza. Sendo assim, deve ser aproveitada/utilizada tendo isso em mente.
+	A reunião é mais eficaz quando:
+	Tem-se um objetivo claro;
+	Os envolvidos dominam o assunto tratado;
+	Já se tem informações obtidas através de outros meios (entrevista, questionário ou outros) para serem discutidas.
+
+2. 1) Através de que meio o cliente compra produtos da empresa?
+   2) Através de que meio a empresa compra produtos dos fornecedores?
+   3) Quais os meios de pagamento disponíveis aos clientes?
+   4) Aceita-se devoluções? Se sim, o sistema será responsável por isso?
+   5) Como é realizada a entrega de produtos aos clientes?
+   6) Os clientes devem ter cadastro para poder comprar?
+   7) O cliente pode fazer uma compra por si só? (sem um vendedor)
+   8) O sistema deverá mandar emails?
+   9) No caso de um produto sem estoque, ele deve ainda ser apresentado indicando "sem estoque" ou deve ser escondido?
+  10) Deve haver um sistema de crédido com a loja? (para reembolso em forma de saldo na loja e/ou cartões presente)
+  
+  3. a) Requisitos Funcionais:
+  		Se cadastrar (whats: número de celular, messenger: conta facebook/email)
+  		Adicionar contatos (whats: número de celular, messenger: através do facebook)
+  		Enviar e receber mensagens de texto, áudio e mídias (com registro de hora/data e feedback de visualizado).
+  		Customizar o ambiente (whats: plano de fundo, messenger: cores).
+  		Postar e visualizar "stories".
+  		"Reagir" a mensagens.
+  		Fazer ligações de áudio, vídeo, 1 para 1 ou em grupo.
+  		Criar grupos de conversa.
+  		
+     b) Requisitos não funcionais
+     		Rodar em android, ios, windows ou navegadores.
+     		Manter histórico de mensagens entre os diferentes meios de usar o serviço.
+     		Manter mensagens não entregues em espera para serem entregues quando o destinatário não tiver conexão.
+     		Criptografar mensagens.
+     		Usuários desconhecidos devem estar identificados como tal, para servir de alerta contra golpes, etc.
+     	
+     c) Messenger:
+     		Integração com facebook e instagram, buscando automaticamente seus contatos nestas redes.
+     		Customização de cores dos balões de mensagem.
+     		Colocar apelidos nos contatos.
+     	
+     	WhatsApp:
+     		Integração com o número de telefone, buscando automaticamente seus contatos da agenda.
+     		Customização de plano de fundo.
+     		Opções de privacidade (esconder visualizado, esconder foto, esconder status)
+     		
+     d) Pontos a serem acrescentados: area profissional vs. area pessoal. Em um cadastro apenas, o usuário teria a área profissional e a área pessoal, podem transitar livremente entre elas no app, desconectar uma ou mais independentemente. Profissional: criar mensagens automatizadas, programar horário de atendimento, etc.
+     
+  4. a) Lean Inception é uma metodologia ágil que engloba vaŕias atividades de um time de desenvolvimento. Ela tem o objetivo de definir o MVP para que o time consiga trabalhar de forma eficaz, focada na simplicidade e no valor de entrega.
+     b) A lei de Pareto diz que 20% dos esforços de desenvolvimento são responsáveis por 80% do valor de entrega. Ou seja, apenas 1/5 dos esforços são realmente eficazes e produzem a maior parte do valor, enquanto 80% dos esforços são dispersos, em vão, ineficientes ou focam em features desnecessários.
+     c) MVP significa Minimun Viable Product (produto mínimo viável), este seria o produto mais simples possível para atender uma necessidade.
+     d) Ele deve ser funcional. Ele deve ser construído com o mínimo de recursos necessários. Ele deve ser escalável para as próximas etapas do projeto.
+     e) As atividades da workshop lean inception consistem em, durante uma semana, fazer-se uma imersão no projeto a fim de definir com clareza os objetivos e os requisitos de um projeto, tornar tudo explícito e claro para que seja possível avaliar a sua viabilidade.
