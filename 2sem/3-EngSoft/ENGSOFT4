@@ -1,0 +1,67 @@
+1. e 2.	Cenário 1: Horário de Funcionamento.
+	Sendo: a hora atual entre 23:00 e 5:59.
+		E: eu já estou autenticado no sistema.
+	Quando: solicito a função saque
+	Então: o sistema apresenta a mensagem "Saques são permitidos apenas entre 6:00 e 22:59"
+		E: a função saque não é aberta.	
+		
+====================================================
+	Cenário 2: Horário de Funcionamento dentro da função saque.
+	Sendo: a hora atual entre 23:00 e 5:59.
+		E: eu já estou autenticado no sistema.
+		E: eu já estou dentro da função saque.
+	Quando: solicito um saque de 50 reais.
+	Então: o sistema apresenta a mensagem "Saques são permitidos apenas entre 6:00 e 22:59"
+		E: o saque não é realizado.
+		E: o sistema volta à tela inicial.
+		
+====================================================
+	Cenário 3: Valor máximo de saque excedido.
+	Sendo: um usuário do caixa eletrônico.
+		E: a hora atual entre 6:00 e 22:59;
+	Quando: eu informo o valor de saque superior a 800 reais.
+	Então: o sistema informa em texto de alto contraste "Valor máximo de saque excedido. O valor máximo de um único saque é de R$ 800,00."
+		E: impede que o usuário solicite o saque (disabilitando o botão ou meio de continuar) até que um valor válido seja informado.
+			
+====================================================
+	Cenário 4: Uso de cheque especial.
+	Sendo: um usuário do caixa eletrônico.
+		E: a hora atual entre 6:00 e 22:59;
+		E: o saldo na minha conta é de 400 reais.
+		E: meu cheque especial disponível é de 200 reais.
+	Quando: eu informo o valor de saque de 500 reais.
+	Então: O sistema apresenta a mensagem: "O valor deste saque excede seu saldo em conta em 100 reais. Deseja usar o cheque especial? (valor disponível no cheque especial: 200 reais)"
+		E: apresenta as opções "Não, rever valor de saque" e "Sim"
+		E: caso não: retorna o usuário á tela de saque
+		E: caso sim: solicita a senha do usuário novamente.
+			E: procede com o saque utilizando e atualizando o valor disponível no cheque especial.
+			
+====================================================
+	Cenário 5: Saque excede saldo + cheque especial.
+	Sendo: um usuário do caixa eletrônico.
+		E: a hora atual entre 6:00 e 22:59;
+		E: o saldo na minha conta é de 400 reais.
+		E: meu cheque especial disponível é de 200 reais.
+	Quando: eu informo o valor de saque de 800 reais.
+	Então: O sistema apresenta a mensagem: "O valor deste saque excede seu saldo em conta em 400 reais. Seu cheque especial não cobre esta diferença. (valor disponível no cheque especial: 200 reais)
+		E: apresenta o obotão "Rever valor de saque"
+		E: Ao clicar: retorna o usuário á tela de saque
+		
+====================================================
+	Cenário 6: Sucesso no saque
+	Sendo: um usuário do caixa eletrônico
+	Quando: um saque for bem sucedido.
+	Então: o sistema deve apresentar a mensagem: "Deseja imprimir o comprovante de saque?"
+		E: apresentar opções: "Não" e "Sim" por 30 segundos.
+		E: caso "Não" ou os 30 segundos se passarem, o comprovante não é impresso.
+		E: caso "Sim", o comprovante é impresso.
+		E: o sistema desloga o usuário.
+
+====================================================
+
+3.	Cenário 1: Arquivo com tamanho superior a 10MB.
+	Sendo: um usuário utilizando o sistema SIA.
+	Quando: eu utilizara a função de enviar um arquivo.
+		E: o tamanho do arquivo for superior a 10MB.
+	Então: o sistema apresenta a mensagem: "SEUS ARQUIVOS SÃO PODEROSOS DEMAIS! POR CONTA DA ALTA DEMANDA, SÓ ESTAMOS ACEITANDO ARQUIVOS COM TAMANHO IGUAL OU INFERIOR A 10MB. SENTIMOS MUITO PELO TRANSTORNO."
+		E: não é feito o processamento do arquivo.
